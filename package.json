@@ -2,7 +2,7 @@
   "name": "amir-line",
   "version": "0.1.0",
   "private": true,
-  "homepage": "https://hosseiniamir-0111.github.io/amir-line",
+  "homepage": "https://amir-line.netlify.app/",
   "dependencies": {
     "@supabase/supabase-js": "^2.57.4",
     "@testing-library/dom": "^10.4.0",
