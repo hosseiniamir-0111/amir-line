@@ -5,6 +5,10 @@ function App() {
   const [value, setValue] = useState("");
   const [message, setMessage] = useState("");
 
+  // تست اتصال به Supabase
+  console.log("SUPABASE URL:", import.meta.env.VITE_SUPABASE_URL)
+  console.log("SUPABASE KEY:", import.meta.env.VITE_SUPABASE_KEY)
+
   const handleSubmit = async () => {
     if (!value) {
       setMessage("⚠️ لطفا مقداری وارد کنید");
@@ -12,7 +16,7 @@ function App() {
     }
 
     const { data, error } = await supabase
-      .from("messages") // اسم جدولت داخل supabase
+      .from("messages") // اسم جدولت
       .insert([{ text: value }]);
 
     if (error) {
@@ -30,8 +34,8 @@ function App() {
         type="text"
         value={value}
         onChange={(e) => setValue(e.target.value)}
-        className="border p-2 rounded"
         placeholder="چیزی بنویس..."
+        className="border p-2 rounded"
       />
       <button
         onClick={handleSubmit}
