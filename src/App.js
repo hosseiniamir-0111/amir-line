@@ -1,49 +1,45 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import { supabase } from "./supabaseClient";
 
 function App() {
-  const [value, setValue] = useState("");
   const [message, setMessage] = useState("");
+  const [status, setStatus] = useState("");
 
-  // تست اتصال به Supabase
-  console.log("SUPABASE URL:", import.meta.env.VITE_SUPABASE_URL)
-  console.log("SUPABASE KEY:", import.meta.env.VITE_SUPABASE_KEY)
+  const handleSubmit = async (e) => {
+    e.preventDefault();
 
-  const handleSubmit = async () => {
-    if (!value) {
-      setMessage("⚠️ لطفا مقداری وارد کنید");
-      return;
-    }
-
-    const { data, error } = await supabase
-      .from("messages") // اسم جدولت
-      .insert([{ text: value }]);
+    const { error } = await supabase
+      .from("messages")
+      .insert([{ text: message }]);
 
     if (error) {
       console.error(error);
-      setMessage("❌ خطا در ثبت");
+      setStatus("❌ خطا در ثبت پیام");
     } else {
-      setMessage("✅ با موفقیت ثبت شد");
-      setValue("");
+      setStatus("✅ پیام با موفقیت ثبت شد!");
+      setMessage(""); // بعد از ارسال خالی بشه
     }
   };
 
   return (
-    <div className="p-6 flex flex-col gap-4">
-      <input
-        type="text"
-        value={value}
-        onChange={(e) => setValue(e.target.value)}
-        placeholder="چیزی بنویس..."
-        className="border p-2 rounded"
-      />
-      <button
-        onClick={handleSubmit}
-        className="bg-blue-500 text-white p-2 rounded"
-      >
-        ارسال
-      </button>
-      {message && <p>{message}</p>}
+    <div style={{ padding: "20px", textAlign: "center" }}>
+      <h1>ارسال پیام به Supabase</h1>
+      <form onSubmit={handleSubmit}>
+        <input
+          type="text"
+          placeholder="پیام خود را وارد کنید"
+          value={message}
+          onChange={(e) => setMessage(e.target.value)}
+          style={{ padding: "10px", width: "250px", marginRight: "10px" }}
+        />
+        <button
+          type="submit"
+          style={{ padding: "10px 20px", cursor: "pointer" }}
+        >
+          ارسال
+        </button>
+      </form>
+      {status && <p style={{ marginTop: "20px" }}>{status}</p>}
     </div>
   );
 }
